@@ -1,0 +1,12 @@
+#!/bin/sh
+
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+
+echo "Mount userdata"
+
+echo "eamb9918 0.1" > /etc/hwrevision
+
+udhcpc &
+
+echo "Starting Software Update"
+/usr/bin/swupdate  &

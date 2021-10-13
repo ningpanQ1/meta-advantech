@@ -1,0 +1,32 @@
+#!/bin/sh
+
+# Mount the Linux kernel virtual filesystems
+mount none -t proc /proc
+mount none -t sysfs /sys
+
+# Ensure devtmpfs is mounted, it must be done manually with initramfs
+mount none -t devtmpfs /dev
+
+# Setup PTY infrastructure
+mkdir /dev/pts
+mount none -t devpts /dev/pts
+
+exec 0</dev/ttymxc1
+exec 1>/dev/ttymxc1
+exec 2>/dev/ttymxc1
+
+ifconfig lo up
+
+# Start all init scripts in /etc/init.d
+for i in /etc/init.d/rcS* ;do
+	# Ignore dangling symlinks (if any).
+	[ ! -f "$i" ] && continue
+	. $i
+done
+
+# Become session leader and try to find a real tty (e.g. ttyS0)
+while true; do
+	setsid cttyhack sh
+	echo "Console sh exited with $?, respawning..."
+	sleep 1
+done
