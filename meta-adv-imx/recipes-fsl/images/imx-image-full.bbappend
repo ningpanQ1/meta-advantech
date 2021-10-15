@@ -1,3 +1,7 @@
+### include advantech based images features.
+require recipes-fsl/images/adv-image.inc
+
+## Add chromium
 CORE_IMAGE_EXTRA_INSTALL += " \
     chromium-ozone-wayland \
 "
