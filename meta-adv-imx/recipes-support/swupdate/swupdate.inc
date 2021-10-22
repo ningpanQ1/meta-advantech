@@ -41,6 +41,7 @@ PACKAGES =+ " \
     ${PN}-tools-hawkbit \
     ${PN}-usb \
     ${PN}-www \
+    ${PN}-engine \
 "
 INSANE_SKIP_${PN}-lua = "dev-so"
 wwwdir ?= "/www"
@@ -72,6 +73,11 @@ FILES_${PN} += " \
     ${sysconfdir}/init.d/* \
     /res/* \
 "
+
+FILES_${PN}-engine = " \
+    ${bindir}/swupdate \
+"
+
 FILES_${PN}-www = " \
     ${libdir}/swupdate/conf.d/*mongoose* \
     ${wwwdir}/* \

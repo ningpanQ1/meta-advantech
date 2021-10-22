@@ -21,6 +21,7 @@ CORE_IMAGE_EXTRA_INSTALL =  " \
 	mtd-utils-ubifs \
 	libconfig \
 	swupdate \
+	swupdate-engine \
 	swupdate-www \
 	util-linux-sfdisk \
 "

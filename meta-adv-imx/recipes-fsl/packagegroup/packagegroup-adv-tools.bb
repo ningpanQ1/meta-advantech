@@ -7,9 +7,15 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 inherit packagegroup
 
-## tools
+SWUPDATE_PKS = " \
+    libubootenv \
+    swupdate-engine \
+"
+
+## packages
 RDEPENDS_${PN} = " \
     stress-ng \
     mdio-tool \
     parted \
+    ${SWUPDATE_PKS} \
 "
