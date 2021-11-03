@@ -4,18 +4,32 @@ Advantech IIoT imx series yocto meta layers
 
 Quick Start Guide
 -----------------
+Essential Yocto Project host packages are:
+```
+sudo apt-get install gawk wget git-core diffstat unzip texinfo gcc-multilib \
+build-essential chrpath socat cpio python python3 python3-pip python3-pexpect \
+xz-utils debianutils iputils-ping python3-git python3-jinja2 libegl1-mesa libsdl1.2-dev \
+pylint3 xterm
+```
+
 See the Advantech Yocto Project User's Guide for instructions on installing repo.
 
 First install the Advantech Linux BSP repo
+```
 $: repo init -u https://github.com/Advantech-IIoT/adv-imx-yocto-bsp  -b zeus -m default.xml
+```
 
 Download the Yocto Project Layers:
+```
 $: repo sync
+```
 
 If errors on repo init, remove the .repo directory and try repo init again.
 
 Run Advantech Linux Yocto Project Setup:
+```
 $: [MACHINE=<machine>] [DISTRO=fsl-imx-<backend>] source ./imx-setup-release.sh -b <build folder>
+```
 
 where
  <machine> defaults to imx8mmeamb9918a1
@@ -24,7 +38,9 @@ where
 After this your system will be configured to start a Yocto Project build.
 
 To use an existing Yocto build directory:
+```
 $: source setup-environment <build path>
+```
 
 Build images
 ---------------------
@@ -48,27 +64,39 @@ Here are some examples:
 
 Building Frame Buffer (FB)
 ---------------------------
+```
   DISTRO=fsl-imx-fb MACHINE=imx8mmeamb9918a1 source imx-setup-release.sh -b build-fb
   bitbake <image>
+```
 
 To run the QT5 examples use the following parameters:
+```
 <QT5 Example> -platform eglfs -plugin evdevtouch:/dev/input/event0
+```
 
 Building XWayland
 ---------------------------
+```
   DISTRO=fsl-imx-xwayland MACHINE=imx8mmeamb9918a1 source imx-setup-release.sh -b eamb9918a1-xwayland
   bitbake <image>
+```
 
 To run the QT5 examples use the following parameters:
+```
 <QT5 example> platform wayland-egl -plugin evdevtouch:/dev/input/event0 --fullscreen
+```
 
 Building Wayland-Weston (wayland)
 ---------------------------
+```
   DISTRO=fsl-imx-wayland MACHINE=imx8mmeamb9918a1 source imx-setup-release.sh -b eamb9918a1-wayland
   bitbake <image>
+```
 
 To run the QT5 examples use the following parameters:
+```
 <QT5 example> platform wayland-egl -plugin evdevtouch:/dev/input/event0 --fullscreen
+```
 
 Building with Multilib support
 ---------------------------
@@ -115,8 +143,9 @@ The Manufacturing Tool - MFGTool
 --------------------------------
 In this release MFGTool uses the community setup.  
 To build MFGTool, build the following:
-
+```
    bitbake fsl-image-mfgtool-initramfs
+```
 
 End User License Agreement
 --------------------------
