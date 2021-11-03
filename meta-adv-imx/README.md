@@ -6,67 +6,66 @@ Quick Start Guide
 -----------------
 Essential Yocto Project host packages are:
 ```
-sudo apt-get install gawk wget git-core diffstat unzip texinfo gcc-multilib \
+$ sudo apt-get install gawk wget git-core diffstat unzip texinfo gcc-multilib \
 build-essential chrpath socat cpio python python3 python3-pip python3-pexpect \
 xz-utils debianutils iputils-ping python3-git python3-jinja2 libegl1-mesa libsdl1.2-dev \
 pylint3 xterm
 ```
 
-See the Advantech Yocto Project User's Guide for instructions on installing repo.
-
-First install the Advantech Linux BSP repo
+See the Advantech Yocto Project User's Guide for instructions on installing repo.		
+First install the Advantech Linux BSP repo		
 ```
 $: repo init -u https://github.com/Advantech-IIoT/adv-imx-yocto-bsp  -b zeus -m default.xml
 ```
 
-Download the Yocto Project Layers:
+Download the Yocto Project Layers:		
 ```
 $: repo sync
 ```
 
-If errors on repo init, remove the .repo directory and try repo init again.
-
-Run Advantech Linux Yocto Project Setup:
+If errors on repo init, remove the .repo directory and try repo init again.			
+Run Advantech Linux Yocto Project Setup:		
 ```
 $: [MACHINE=<machine>] [DISTRO=fsl-imx-<backend>] source ./imx-setup-release.sh -b <build folder>
 ```
 
-where
- <machine> defaults to imx8mmeamb9918a1
- <build folder> specifies the build folder name 
+where		
+ <machine> defaults to imx8mmeamb9918a1		
+ <build folder> specifies the build folder name 		
 
-After this your system will be configured to start a Yocto Project build.
-
-To use an existing Yocto build directory:
+After this your system will be configured to start a Yocto Project build.		
+To use an existing Yocto build directory:		
 ```
 $: source setup-environment <build path>
 ```
 
 Build images
 ---------------------
-Each graphical backend X11, Frame buffer and Wayland must be in a separate build 
-directory, so the setup script above must be run for each backend to configure the build 
-correctly. In this release two image recipes are provided that work on almost all backends.
+Each graphical backend X11, Frame buffer and Wayland must be in a separate build			
+directory, so the setup script above must be run for each backend to configure the build					 
+correctly. In this release two image recipes are provided that work on almost all backends.				
 
-DISTROs are new and the way to configure for any backends.  Use DISTRO= instead of the -e on the setup script.
-The -e parameter gets converted to the appropriate distro configuration.
+DISTROs are new and the way to configure for any backends.  		
+Use DISTRO= instead of the -e on the setup script.			
+The -e parameter gets converted to the appropriate distro configuration.		
 
-Note: 
-DirectFB is no longer supported in i.MX graphic builds.
-The X11 and Framebuffer distros are only supported for i.MX 6 and i.MX 7.  i.MX 8 should use xwayland only.
-XWayland is the default distro for all i.MX families.
+***Note:***		 
+***DirectFB is no longer supported in i.MX graphic builds.***			
+***The X11 and Framebuffer distros are only supported for i.MX 6 and i.MX 7.  i.MX 8 should use xwayland only.***			
+***XWayland is the default distro for all i.MX families.***			
 
-   imx-image-multimedia: This image contains all the packages except QT5/OpenCV/Machine Learning packages.
-   imx-image-full: This is the big image which includes imx-image-multimedia + OpenCV + QT5 + Machine Learning packages.
+-  imx-image-multimedia: This image contains all the packages except QT5/OpenCV/Machine Learning packages.		
+-  imx-image-full: This is the big image which includes imx-image-multimedia + OpenCV + QT5 + Machine Learning packages.		
+-  swupdate-image: Advantech OTA recovery initrd image for recovery image   
 
-Here are some examples:
-(The example uses the imx8mmeamb9918a1 MACHINE but substitute this with whatever you are using)
+Here are some examples:				
+(The example uses the imx8mmeamb9918a1 MACHINE but substitute this with whatever you are using)		
 
 Building Frame Buffer (FB)
 ---------------------------
 ```
-  DISTRO=fsl-imx-fb MACHINE=imx8mmeamb9918a1 source imx-setup-release.sh -b build-fb
-  bitbake <image>
+  $ DISTRO=fsl-imx-fb MACHINE=imx8mmeamb9918a1 source imx-setup-release.sh -b build-fb
+  $ bitbake <image>
 ```
 
 To run the QT5 examples use the following parameters:
@@ -100,106 +99,106 @@ To run the QT5 examples use the following parameters:
 
 Building with Multilib support
 ---------------------------
-Yocto Project is able to build libraries for different target optimizations, combing those in one system image,
-allowing the user to run both 32-bit and 64-bit applications.
-Here is an example to add multilib support (lib32).
+Yocto Project is able to build libraries for different target optimizations, combing those in one system image,				
+allowing the user to run both 32-bit and 64-bit applications.				
+Here is an example to add multilib support (lib32).				
 
-In local.conf
-- Define multilib targets
-require conf/multilib.conf
-MULTILIBS = "multilib:lib32"
-DEFAULTTUNE_virtclass-multilib-lib32 = "armv7athf-neon"
+In local.conf				
+- Define multilib targets				
+require conf/multilib.conf					
+MULTILIBS = "multilib:lib32"				
+DEFAULTTUNE_virtclass-multilib-lib32 = "armv7athf-neon"					
 
-- 32-bit libraries to be added into the image
-IMAGE_INSTALL_append = " lib32-glibc lib32-libgcc lib32-libstdc++"
+- 32-bit libraries to be added into the image				
+IMAGE_INSTALL_append = " lib32-glibc lib32-libgcc lib32-libstdc++"				
 
 Building XEN
 ------------
-XEN is supported on IMX8QM/QXP. To enable xen build add the following line to local.conf:
+XEN is supported on IMX8QM/QXP. To enable xen build add the following line to local.conf:		
 
   DISTRO_FEATURES_append = " xen"
 
-Key tech implemented:
-- GPU partition, 2 GPUs assigned to different OSes
-- DPU partition, 2 DPUs assigned to different OSes
-- USDHC passthrough
-- USB passthrough
-- LPUART passthrough
-- Software partition based on SCU firmware to restrict resource access from different OSes.
+Key tech implemented:		
+- GPU partition, 2 GPUs assigned to different OSes		
+- DPU partition, 2 DPUs assigned to different OSes		
+- USDHC passthrough		
+- USB passthrough		
+- LPUART passthrough		
+- Software partition based on SCU firmware to restrict resource access from different OSes.		
 
-Hardware Floating Point
+Hardware Floating Point		
 -----------------------
-This release enables hardware floating point by default.  This feature is enabled in both the machine 
-configurations and in the layer.conf. (Some machine files exist in the community meta-fsl-arm without this setting.)
-DEFAULTTUNE_mx6 = "cortexa9hf-neon
+This release enables hardware floating point by default.  This feature is enabled in both the machine 		
+configurations and in the layer.conf. (Some machine files exist in the community meta-fsl-arm without this setting.)		
+DEFAULTTUNE_mx6 = "cortexa9hf-neon		
 
-Software floating point is not supported starting with the 4.1.15_1.0.0_ga release
+Software floating point is not supported starting with the 4.1.15_1.0.0_ga release		
 
-Restricted Codecs
+Restricted Codecs		
 -----------------
-These codecs have contractual restrictions that require separate distribution.
+These codecs have contractual restrictions that require separate distribution.		
 
-The Manufacturing Tool - MFGTool
+The Manufacturing Tool - MFGTool		
 --------------------------------
-In this release MFGTool uses the community setup.  
-To build MFGTool, build the following:
+In this release MFGTool uses the community setup. 		 
+To build MFGTool, build the following:		
 ```
-   bitbake fsl-image-mfgtool-initramfs
+   $ bitbake fsl-image-mfgtool-initramfs
 ```
 
 End User License Agreement
 --------------------------
-During the NXP Yocto Project Community BSP setup-environment process, the NXP i.MX End User License Agreement (EULA)
-is displayed. To continue, users must agree to the conditions of this license. The agreement to the terms allows the
-Yocto build to untar packages from the NXP mirror. Please read this license agreement carefully during the
-setup process because, once accepted, all further work in the Yocto environment is tied to this accepted agreement.
+During the NXP Yocto Project Community BSP setup-environment process, the NXP i.MX End User License Agreement (EULA)		
+is displayed. To continue, users must agree to the conditions of this license. The agreement to the terms allows the		
+Yocto build to untar packages from the NXP mirror. Please read this license agreement carefully during the		
+setup process because, once accepted, all further work in the Yocto environment is tied to this accepted agreement.		
 
-Chromium
+Chromium		
 ---------
-Add Chromium to your Wayland or X11-based image by adding the following lines to local.conf:
+Add Chromium to your Wayland or X11-based image by adding the following lines to local.conf:		
 
 IMAGE_INSTALL_append = \
-    "${@bb.utils.contains('DISTRO_FEATURES', 'wayland', ' chromium-ozone-wayland', \
-        bb.utils.contains('DISTRO_FEATURES',     'x11', ' chromium-x11', \
-                                                        '', d), d)}"
+    "${@bb.utils.contains('DISTRO_FEATURES', 'wayland', ' chromium-ozone-wayland', \		
+        bb.utils.contains('DISTRO_FEATURES',     'x11', ' chromium-x11', \		
+                                                        '', d), d)}"		
 
-Build server host requirements for chromium 74 version:
+Build server host requirements for chromium 74 version:		
 
-- Host gcc version should be gcc 7. Ubuntu 18.04 has a default gcc 7 version.
-- Increase ulimit (number of open file descriptors) to 4098
+- Host gcc version should be gcc 7. Ubuntu 18.04 has a default gcc 7 version.		
+- Increase ulimit (number of open file descriptors) to 4098		
 
-Chromium will have compilation errors, if any of the above host requirements are not met.
+Chromium will have compilation errors, if any of the above host requirements are not met.		
 
-QTWebEngine
+QTWebEngine		
 --------
 Qtwebengine is not built by default so add this to local.conf or image recipe. It is supported only on the machines
-that has GPU.
- IMAGE_INSTALL_append = "packagegroup-qt5-webengine"
+that has GPU.		
+ IMAGE_INSTALL_append = "packagegroup-qt5-webengine"		
 
-There are many browsers available using QtWebEngine and can be found here:
-/usr/share/examples/webengine
-/usr/share/examples/webenginewidgets
+There are many browsers available using QtWebEngine and can be found here:				
+/usr/share/examples/webengine				
+/usr/share/examples/webenginewidgets				
 
 Qt
 --
-Note that Qt has both a commercial and open source license options.  Make the decision about which license
-to use before starting work on custom Qt applications.  Once custom Qt applications are started with an open source
-Qt license the work cannot be used with a commercial Qt license.  Work with a legal representative to understand
-the differences between each license.
+Note that Qt has both a commercial and open source license options.  Make the decision about which license		
+to use before starting work on custom Qt applications.  Once custom Qt applications are started with an open source		
+Qt license the work cannot be used with a commercial Qt license.  Work with a legal representative to understand		
+the differences between each license.		
 
-Note Qt is not supported on i.MX 6UltraLite and i.MX 7Dual. It works on X11 backend only but is not a supported feature.
+Note Qt is not supported on i.MX 6UltraLite and i.MX 7Dual. It works on X11 backend only but is not a supported feature.		
 
 Qt with kms
 --
-Some customers wants to use QT without wayland/weston and the alternative for that is to use through kms plugin.
-This configuration is supported only on mx8 machines.
-By default, wayland plugin is enabled.We can switch to kms plugin by following these steps.
-- killall weston
-- export QT_QPA_EGLFS_ALWAYS_SET_MODE=1
-- Run any qt application using -platform eglfs
-  Example: ./Qt5_CinematicExperience -platform eglfs
+Some customers wants to use QT without wayland/weston and the alternative for that is to use through kms plugin.		
+This configuration is supported only on mx8 machines.		
+By default, wayland plugin is enabled.We can switch to kms plugin by following these steps.		
+- killall weston		
+- export QT_QPA_EGLFS_ALWAYS_SET_MODE=1		
+- Run any qt application using -platform eglfs					
+  Example: ./Qt5_CinematicExperience -platform eglfs		
 
 Systemd
 -------
-Systemd support is enabled as default but it can be disabled by commenting out the systemd settings in
-meta-sdk/conf/distro/include/fsl-imx-preferred-env.inc.
+Systemd support is enabled as default but it can be disabled by commenting out the systemd settings in		
+meta-sdk/conf/distro/include/fsl-imx-preferred-env.inc.		
