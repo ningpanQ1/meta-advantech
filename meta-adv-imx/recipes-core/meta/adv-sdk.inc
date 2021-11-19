@@ -3,7 +3,7 @@
 TOOLCHAIN_TARGET_TASK += " \
    zlib curl curl-dev \
    giflib jpeg libpng \
-   libusb libxml2 ncurses \
+   libusb1 libusb-compat libxml2 ncurses \
    boost \
 "
 
