@@ -2,7 +2,7 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 SRCBRANCH = "imx_5.4.70_2.3.0"
 LOCALVERSION = "-2.3.0"
 KERNEL_SRC = "git://github.com/Advantech-IIoT/linux-imx.git;protocol=https"
-SRCREV = "309cd55719aa57ade37d1379f4753517022d2fa9"
+SRCREV = "9d93453314231f6bb1746bbec6cdbbfc26efbad7"
 
 
 addtask copy_defconfig_v2 after do_copy_defconfig before do_merge_delta_config
