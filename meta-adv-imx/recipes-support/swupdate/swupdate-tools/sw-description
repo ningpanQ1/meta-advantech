@@ -1,0 +1,28 @@
+software =
+{
+	version = "0.1.0";
+
+	eamb9918 = {
+		hardware-compatibility: [ "1.0"];
+		
+		images: (
+			{
+				filename = "boot.img";
+				device = "/dev/mmcblk2p1";
+				type = "raw";
+			},
+			{
+				filename = "rootfs.zstd";
+				device = "/dev/mmcblk2p3";
+				type = "raw";
+				compressed = "zstd";
+			}
+		);
+		scripts: (
+			{
+				filename = "fixupdate.sh";
+				type = "shellscript";
+			}
+		);
+	}
+}
