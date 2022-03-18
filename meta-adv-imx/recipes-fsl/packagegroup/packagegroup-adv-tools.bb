@@ -18,4 +18,5 @@ RDEPENDS_${PN} = " \
     mdio-tool \
     parted \
     ${SWUPDATE_PKS} \
+    gester \
 "

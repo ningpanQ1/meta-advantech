@@ -5,8 +5,6 @@ require recipes-fsl/images/adv-image.inc
 CORE_IMAGE_EXTRA_INSTALL += " \
     chromium-ozone-wayland \   
 "
-IMAGE_INSTALL_append += " packagegroup-core-ssh-openssh openssh-sftp-server "
-
 # Add launcher for chromium.
 ROOTFS_POSTPROCESS_COMMAND_append_mx8 = "install_browser; \
                                          install_virtual_keyboard; "

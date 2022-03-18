@@ -1,0 +1,8 @@
+[Unit]
+Description=a gesture interpreting program for touchscreens 
+
+[Service]
+ExecStart=/usr/bin/gester
+
+[Install]
+WantedBy=multi-user.target
