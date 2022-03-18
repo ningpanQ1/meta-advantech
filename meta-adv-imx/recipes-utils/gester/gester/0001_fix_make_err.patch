@@ -1,0 +1,18 @@
+diff a/Makefile b/Makefile
+--- a/Makefile
++++ b/Makefile	
+@@ -5,10 +5,10 @@
+ 
+ WORKDIR = `pwd`
+ 
+-CC = gcc
+-CXX = g++
+-AR = ar
+-LD = g++
++CC = 
++CXX = 
++AR = 
++LD = 
+ 
+ INC = 
+ CFLAGS =  -Wall
