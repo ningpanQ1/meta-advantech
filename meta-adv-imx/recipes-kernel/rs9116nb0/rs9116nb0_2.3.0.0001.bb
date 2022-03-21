@@ -10,7 +10,9 @@ inherit pkgconfig systemd
 SRC_URI = "file://rs9116nb0.2.3.0.0001.tar.bz2 \
 		file://defconfig \
 		file://startup_wlan_bt.sh \
-		file://wifibt.service"
+		file://wifibt.service \
+		file://0001_change_COEX_MODE.patch \
+" 
 
 RDEPENDS_${PN} = "bash"
 
@@ -37,6 +39,7 @@ do_install() {
 	fi
 
 	## install the release
+
 	install -m 755 ${B}/release/*_util     ${D}/usr/local/wifibt/
 	install -m 755 ${B}/release/*_transmit     ${D}/usr/local/wifibt/
 	install -m 755 ${B}/release/ant_encryption     ${D}/usr/local/wifibt/
@@ -87,3 +90,4 @@ FILES_${PN} += "${exec_prefix} ${systemd_system_unitdir}"
 ## Since no pass LDFLAGS for these program, so we
 ## we must skip the qa check
 INSANE_SKIP_${PN} += "ldflags"
+INHIBIT_PACKAGE_STRIP = "1" 
