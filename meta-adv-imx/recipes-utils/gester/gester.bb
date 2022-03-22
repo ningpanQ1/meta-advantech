@@ -22,8 +22,6 @@ INHIBIT_PACKAGE_STRIP = "1"
 
 do_compile() {
         oe_runmake LD="${CXX}" CC="${CC}" CXX="${CXX}" AR="${AR}"
-#	oe_runmake LD="${CXX}" CC="${CC}" CFLAGS="${CFLAGS}" CXX="${CXX}" AR="${AR}"
-#       oe_runmake CXX="${CXX}" CFLAGS="${CFLAGS}"
 }
 
 do_install() {	
