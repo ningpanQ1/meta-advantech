@@ -3,7 +3,7 @@ SECTION = "base"
 LICENSE = "LGPL-3.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=3000208d539ec061b899bce1d9ce9404"
 
-SRC_URI = "git://github.com/Advantech-IIoT/gester.git;protocol=git;branch=master \
+SRC_URI = "git://github.com/Advantech-IIoT/gester.git;protocol=https;branch=master \
            file://gester.service \
            file://0001_fix_make_err.patch \
 "
