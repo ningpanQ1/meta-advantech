@@ -1,0 +1,12 @@
+diff a/weston@.service b/weston@.service
+--- a/weston@.service    
++++ b/weston@.service   
+@@ -30,6 +30,8 @@
+ # the VT it just activated for us. Switch manually:
+ ExecStartPre=/usr/bin/chvt 7
+ ExecStart=/usr/bin/weston --log=${XDG_RUNTIME_DIR}/weston.log $OPTARGS
++ExecStopPost=/usr/bin/chvt 1
++TimeoutStopSec=10
+
+ IgnoreSIGPIPE=no
+
