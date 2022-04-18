@@ -174,6 +174,12 @@ echo "# Switch to Debian packaging and include package-management in the image" 
 echo "PACKAGE_CLASSES = \"package_deb\"" >> conf/local.conf
 echo "EXTRA_IMAGE_FEATURES += \"package-management\"" >> conf/local.conf
 
+echo >> conf/local.conf
+echo "# force change password as root when first login " >> conf/local.conf
+echo "INHERIT += \"extrausers-update\"" >> conf/local.conf
+echo "EXTRA_USERS_PARAMS = \"passwd-expire root\"" >> conf/local.conf
+
+
 if [ ! -e $BUILD_DIR/conf/bblayers.conf.org ]; then
     cp $BUILD_DIR/conf/bblayers.conf $BUILD_DIR/conf/bblayers.conf.org
 else
