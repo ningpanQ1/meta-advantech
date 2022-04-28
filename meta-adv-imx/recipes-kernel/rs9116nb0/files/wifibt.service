@@ -1,0 +1,9 @@
+[Unit]
+Description=Wifi Bt Driver load service
+Before=network.target bluetooth.service wpa_supplicant.service 
+
+[Service]
+ExecStart=/usr/local/wifibt/startup_wlan_bt.sh
+
+[Install]
+WantedBy=multi-user.target
