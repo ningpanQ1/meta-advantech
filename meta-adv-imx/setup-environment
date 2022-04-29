@@ -59,7 +59,7 @@ Available Poky's distros: `echo; ls sources/poky/meta-poky/conf/distro/*.conf \
 Examples:
 
 - To create a new Yocto build directory:
-  $ MACHINE=imx8mmeamb9918a1 DISTRO=fsl-imx-xwayland source $PROGNAME imx8mmeamb9918a1
+  $ MACHINE=imx8mmeamb9918a1 DISTRO=fsl-imx-xwayland source imx-setup-release.sh -b imx8mmeamb9918a1
 
 - To use an existing Yocto build directory:
   $ source $PROGNAME build
