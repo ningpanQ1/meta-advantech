@@ -21,8 +21,10 @@ $: repo init -u https://github.com/Advantech-IIoT/adv-imx-yocto-bsp  -b hardknot
 ```
 
 Download the Yocto Project Layers:					
+````
 $: repo sync
-
+````
+								
 If errors on repo init, remove the .repo directory and try repo init again.						
 
 Advantech Linux Yocto Project Setup:
@@ -34,8 +36,8 @@ where
  <machine> defaults to imx8mmeamb9918a1		
  <build folder> specifies the build folder name  
 
-After this your system will be configured to start a Yocto Project build.					
-To use an existing Yocto build directory:				
+After this your system will be configured to start a Yocto Project build.												
+To use an existing Yocto build directory:										
 ```
 $: source setup-environment <build path>
 ```
@@ -43,23 +45,21 @@ $: source setup-environment <build path>
 
 ## 3.Build images
 ---------------------
-Each graphical backend X11, Frame buffer and Wayland must be in a separate build 					
-directory, so the setup script above must be run for each backend to configure the build 					
-correctly. In this release two image recipes are provided that work on almost all backends.					
+Each graphical backend X11, Frame buffer and Wayland must be in a separate build directory, so the setup script above must be run for each backend to configure the build correctly. In this release two image recipes are provided that work on almost all backends.						
 
 DISTROs are new and the way to configure for any backends.  Use DISTRO= instead of the -e on the setup script.					
 The -e parameter gets converted to the appropriate distro configuration.					
 
-***Note:***					 
-***DirectFB is no longer supported in i.MX graphic builds.***						
-***The X11 and Framebuffer distros are only supported for i.MX 6 and i.MX 7.  i.MX 8 should use xwayland only.***					
-***XWayland is the default distro for all i.MX families.***					
+***Note:***						
+***DirectFB is no longer supported in i.MX graphic builds.***								
+***The X11 and Framebuffer distros are only supported for i.MX 6 and i.MX 7.  i.MX 8 should use xwayland only.***						
+***XWayland is the default distro for all i.MX families.***						
 
 -   imx-image-multimedia: This image contains all the packages except QT5/OpenCV/Machine Learning packages.					
 -   imx-image-full: This is the big image which includes imx-image-multimedia + OpenCV + QT5 + Machine Learning packages.					
 -   swupdate-image: Advantech OTA recovery initrd image for recovery image  					
 
-Here are some examples:					
+Here are some examples:																
 (The example uses the imx8mmeamb9918a1 MACHINE but substitute this with whatever you are using)					
 					
 ### 3.1 Building Frame Buffer (FB)
@@ -104,22 +104,28 @@ Yocto Project is able to build libraries for different target optimizations, com
 allowing the user to run both 32-bit and 64-bit applications.					
 Here is an example to add multilib support (lib32).						
 
-In local.conf						
-- Define multilib targets						
-require conf/multilib.conf						
-MULTILIBS = "multilib:lib32"						
-DEFAULTTUNE_virtclass-multilib-lib32 = "armv7athf-neon"						
-						
-- 32-bit libraries to be added into the image						
-IMAGE_INSTALL_append = " lib32-glibc lib32-libgcc lib32-libstdc++"						
+In local.conf											
+- Define multilib targets		
+```										
+require conf/multilib.conf									
+MULTILIBS = "multilib:lib32"												
+DEFAULTTUNE_virtclass-multilib-lib32 = "armv7athf-neon"												
+```
+												
+- 32-bit libraries to be added into the image
+```						
+IMAGE_INSTALL_append = " lib32-glibc lib32-libgcc lib32-libstdc++"											
+```
 						
 ### 3.5 Hardware Floating Point
 -----------------------
 This release enables hardware floating point by default.  This feature is enabled in both the machine 
-configurations and in the layer.conf. (Some machine files exist in the community meta-fsl-arm without this setting.)
+configurations and in the layer.conf. (Some machine files exist in the community meta-fsl-arm without this setting.)						
+```
 DEFAULTTUNE_mx6 = "cortexa9hf-neon
-
-Software floating point is not supported starting with the 4.1.15_1.0.0_ga release
+```
+						
+Software floating point is not supported starting with the 4.1.15_1.0.0_ga release						
 
 ### 3.6 Restricted Codecs
 -----------------
@@ -127,8 +133,8 @@ These codecs have contractual restrictions that require separate distribution.
 
 ### 3.7 The Manufacturing Tool - MFGTool
 --------------------------------
-In this release MFGTool uses the community setup.						  
-To build MFGTool, build the following:						
+In this release MFGTool uses the community setup.						
+To build MFGTool, build the following:					
 ```
    bitbake fsl-image-mfgtool-initramfs
 ```
@@ -143,12 +149,13 @@ setup process because, once accepted, all further work in the Yocto environment 
 ## 5. Chromium
 ---------
 Add Chromium to your Wayland or X11-based image by adding the following lines to local.conf:						
-
+```
 IMAGE_INSTALL_append = \						
     "${@bb.utils.contains('DISTRO_FEATURES', 'wayland', ' chromium-ozone-wayland', \						
         bb.utils.contains('DISTRO_FEATURES',     'x11', ' chromium-x11', \						
                                                         '', d), d)}"						
-						
+```
+												
 Build server host requirements for chromium 74 version:						
 
 - Host gcc version should be gcc 7. Ubuntu 18.04 has a default gcc 7 version.						
@@ -159,9 +166,11 @@ Chromium will have compilation errors, if any of the above host requirements are
 ## 6. QTWebEngine
 --------
 Qtwebengine is not built by default so add this to local.conf or image recipe. It is supported only on the machines
-that has GPU.						
+that has GPU.
+```						
  IMAGE_INSTALL_append = "packagegroup-qt5-webengine"						
-						
+```
+												
 There are many browsers available using QtWebEngine and can be found here:						
 /usr/share/examples/webengine						
 /usr/share/examples/webenginewidgets						
@@ -182,9 +191,13 @@ This configuration is supported only on mx8 machines.
 By default, wayland plugin is enabled.We can switch to kms plugin by following these steps.						
 - killall weston						
 - export QT_QPA_EGLFS_ALWAYS_SET_MODE=1						
-- Run any qt application using -platform eglfs						
-  Example: ./Qt5_CinematicExperience -platform eglfs						
-						
+- Run any qt application using -platform eglfs		
+										
+  Example:
+```
+ ./Qt5_CinematicExperience -platform eglfs						
+```
+													
 ## 8. Systemd
 --------------
 Systemd support is enabled as default but it can be disabled by commenting out the systemd settings in
