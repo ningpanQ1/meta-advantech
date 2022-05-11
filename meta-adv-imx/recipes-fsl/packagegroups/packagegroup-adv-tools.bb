@@ -7,10 +7,10 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 inherit packagegroup
 
-#SWUPDATE_PKS = " \
-#    libubootenv \
-#    swupdate-engine \
-#"
+SWUPDATE_PKS = " \
+    libubootenv \
+    swupdate-engine \
+"
 
 ## packages
 RDEPENDS:${PN} = " \
