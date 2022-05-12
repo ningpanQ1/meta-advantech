@@ -13,7 +13,9 @@ fi
 
 echo "eamb9918 0.1" > /etc/hwrevision
 
-udhcpc &
+# get the ip address for eth0 or eth1 automaticlly. 
+udhcpc -i eth0 >/dev/null 2>&1 &
+udhcpc -i eth1 >/dev/null 2>&1 &
 
 echo "Starting Software Update"
 /usr/bin/swupdate  &
