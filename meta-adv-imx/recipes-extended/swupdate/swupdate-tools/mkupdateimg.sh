@@ -18,7 +18,7 @@ if [ -e "$DTB_IMAGE" ] && [ -e "$KERNEL_IMAGE" ];then
 	## 128M
 	rm -rf boot.img
 	dd if=/dev/zero of=boot.img count=154112 bs=1024 1>/dev/null 2>&1
-	mkfs.vfat boot.img  2>&1 1>/dev/null
+	mkfs.vfat -F 32 -n "boot" boot.img 1>/dev/null 2>&1
 	fsck.vfat -af boot.img 2>&1 1>/dev/null
 	mkdir -p ./.BOOTIMG
 	mount -t vfat boot.img ./.BOOTIMG
@@ -36,6 +36,8 @@ if [ -e "$ROOTFS_EXT4_IMAGE" ];then
 	result=`cat sw-description | grep compressed | grep zstd`
 	[ "x$result" = "x" ] && echo "sw-description has invalid compressed type for rootfs" && exit 1
 	rm -rf rootfs.zstd
+	result=`e2label $ROOTFS_EXT4_IMAGE | grep ext`
+	[ "x$result" = "x" ] && e2label $ROOTFS_EXT4_IMAGE rootfs
 	zstd $ROOTFS_EXT4_IMAGE -f -o rootfs.zstd
 	FILES="${FILES} rootfs.zstd"
 fi
