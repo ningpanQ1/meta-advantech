@@ -2,6 +2,9 @@
 
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
+# we sleep some time to wait device node generated
+sleep 6
+
 echo "Mount userdata"
 mkdir -p /userdata
 boot_from_mmcblk1=`cat /proc/cmdline | grep "root=/dev/mmcblk1"`
