@@ -2,6 +2,8 @@ DESCRIPTION = "generate sd-card image"
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COREBASE}/meta/COPYING.MIT;md5=3da9cfbcb788c80a0384361b4de20420"
 SECTION = "BSP"
+# depends on swupdate-image output swupdate-image-${MACHINE}.cpio.gz.u-boot
+DEPENDS += "swupdate-image"
 
 MK_SDCARD_IMG = "mk-sdcard-image"
 
@@ -56,9 +58,14 @@ do_after_deploy() {
 	rm -rf ${DEPLOY_DIR_IMAGE}/${MK_SDCARD_IMG}/mkimg-linux.sh
 }
 
+do_clean() {
+	rm -rf ${DEPLOY_DIR_IMAGE}/${MK_SDCARD_IMG}/out/
+}
 
 addtask deploy after do_compile
 addtask after_deploy after do_deploy before do_build
+# deploy task depends on image complete task
+do_deploy[deptask] = "do_image_complete"
 do_compile[noexec] = "1"
 do_install[noexec] = "1"
 do_package[noexec] = "1"
