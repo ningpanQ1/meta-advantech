@@ -2,7 +2,21 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 SRCBRANCH = "lf-5.10.y"
 LOCALVERSION = "-lts-5.10.y"
 KERNEL_SRC = "git://github.com/Advantech-IIoT/linux-imx.git;protocol=https"
-SRCREV = "2acec291dfee4fc5881ed11758e66eb018f603d4"
+SRCREV = "f0e38dc1081dfb4fb52e67ecfee5c00fa6a98f9a"
+SRC_URI_append += "\
+       file://logo_adv_custom_1024_600_clut224.ppm \
+       file://logo_adv_custom_1280_800_clut224.ppm \
+       file://logo_adv_custom_1366_768_clut224.ppm \
+       file://logo_adv_custom_1920_1080_clut224.ppm \
+"
+
+addtask do_after_unpack after do_unpack before do_copy_defconfig
+do_after_unpack() {
+	cp "${WORKDIR}/logo_adv_custom_1024_600_clut224.ppm" "${WORKDIR}/git/drivers/video/logo/"
+        cp "${WORKDIR}/logo_adv_custom_1280_800_clut224.ppm" "${WORKDIR}/git/drivers/video/logo/"
+        cp "${WORKDIR}/logo_adv_custom_1366_768_clut224.ppm" "${WORKDIR}/git/drivers/video/logo/"
+        cp "${WORKDIR}/logo_adv_custom_1920_1080_clut224.ppm" "${WORKDIR}/git/drivers/video/logo/"
+}
 
 addtask copy_defconfig_v2 after do_copy_defconfig before do_merge_delta_config
 do_copy_defconfig_v2 () {
