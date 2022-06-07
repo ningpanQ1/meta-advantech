@@ -10,8 +10,10 @@ LIC_FILES_CHKSUM:append = " \
 "
 
 SRC_URI:append:imx = " \
-    file://0002-chromium-met-EGL-API-GetProcAddress-failures.patch \
-    file://0003-Disable-dri-for-imx-gpu.patch \
+    file://0001-Add-knob-for-imx-gpu.patch \
+    file://0002-Disable-dri-for-imx-gpu.patch \
+    file://0003-Fixed-chromium-flicker-with-g2d-renderer.patch \
+    file://0004-chromium-met-EGL-API-GetProcAddress-failures.patch \
 "
 SRC_URI:append:mx8 = " \
     file://0101-FFmpeg-enable-vp8-vp9-h264-hevc-v4l2-config.patch \
@@ -23,17 +25,17 @@ SRC_URI:append:mx8 = " \
     file://0107-Chromium-change-stride-alignment-from-32-to-16.patch \
 "
 
-GN_ARGS_DISABLE_GBM             = ""
-GN_ARGS_DISABLE_GBM:mx6 = "use_system_minigbm=false use_wayland_gbm=false"
-GN_ARGS_DISABLE_GBM:mx7 = "${GN_ARGS_DISABLE_GBM:mx6-nxp-bsp}"
-GN_ARGS_USE_IMXGPU        = "use_imxgpu=false"
-GN_ARGS_USE_IMXGPU:imxgpu = "use_imxgpu=true"
-GN_ARGS_ENABLE_PROPRIETARY_CODECS             = ""
-GN_ARGS_ENABLE_PROPRIETARY_CODECS:mx8 = "proprietary_codecs=true"
 GN_ARGS:append:imx = " \
     ${GN_ARGS_DISABLE_GBM} \
     ${GN_ARGS_USE_IMXGPU} \
     ${GN_ARGS_ENABLE_PROPRIETARY_CODECS} \
 "
+GN_ARGS_DISABLE_GBM             = ""
+GN_ARGS_DISABLE_GBM:mx6 = "use_system_minigbm=false use_wayland_gbm=false"
+GN_ARGS_DISABLE_GBM:mx7 = "${GN_ARGS_DISABLE_GBM:mx6}"
+GN_ARGS_USE_IMXGPU        = "use_imxgpu=false"
+GN_ARGS_USE_IMXGPU:imxgpu = "use_imxgpu=true"
+GN_ARGS_ENABLE_PROPRIETARY_CODECS             = ""
+GN_ARGS_ENABLE_PROPRIETARY_CODECS:mx8 = "proprietary_codecs=true"
 
 CHROMIUM_EXTRA_ARGS:append:imx = " --disable-features=VizDisplayCompositor --in-process-gpu"
