@@ -9,6 +9,8 @@ LIC_FILES_CHKSUM:append = " \
     file://${S}/third_party/ffmpeg/CREDITS.chromium;md5=aa2247c58648fadacf4d7f865259eebe \
 "
 
+SRC_URI:remove = "file://0001-Fixed-chromium-flicker-with-g2d-renderer.patch"
+
 SRC_URI:append:imx = " \
     file://0001-Add-knob-for-imx-gpu.patch \
     file://0002-Disable-dri-for-imx-gpu.patch \
