@@ -219,6 +219,11 @@ if [ -d ../sources/meta-ivi ]; then
     echo "BBLAYERS += \"\${BSPDIR}/sources/meta-ivi/meta-ivi-test\"" >> $BUILD_DIR/conf/bblayers.conf
 fi
 
+# Enable meta-qt5-extra for falkon browser
+if [ -d ../sources/meta-qt5-extra ]; then
+    echo "BBLAYERS += \"\${BSPDIR}/sources/meta-qt5-extra\"" >> $BUILD_DIR/conf/bblayers.conf
+fi
+
 echo BSPDIR=$BSPDIR
 echo BUILD_DIR=$BUILD_DIR
 
