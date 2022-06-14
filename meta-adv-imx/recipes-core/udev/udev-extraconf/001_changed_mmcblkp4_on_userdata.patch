@@ -1,13 +1,19 @@
 diff --git a/mount.sh b/mount.sh
-index ac4508f..afeb4d4 100755
+index b237318..f225c60 100755
 --- a/mount.sh
 +++ b/mount.sh
-@@ -53,7 +53,12 @@ automount_systemd() {
+@@ -53,7 +53,18 @@ automount_systemd() {
          grep "^[[:space:]]*$tmp" /etc/fstab && return
      done
  
 -    [ -d "/run/media/$name" ] || mkdir -p "/run/media/$name"
-+	is_userdata=`echo $DEVNAME | grep mmcblk | grep 4`
++	boot_from_mmcblk1=`cat /proc/cmdline | grep "root=/dev/mmcblk1"`
++	if [ "x$boot_from_mmcblk1" = "x" ];then
++		is_userdata=`echo $DEVNAME | grep mmcblk2p4`
++	else
++		is_userdata=`echo $DEVNAME | grep mmcblk1p4`
++	fi
++
 +	if [ "x$is_userdata" = "x" ];then
 +		[ -d "/run/media/$name" ] || mkdir -p "/run/media/$name"
 +	else
@@ -16,7 +22,7 @@ index ac4508f..afeb4d4 100755
  
      MOUNT="$MOUNT -o silent"
  
-@@ -70,14 +75,22 @@ automount_systemd() {
+@@ -70,14 +81,22 @@ automount_systemd() {
          ;;
      esac
  
@@ -47,12 +53,18 @@ index ac4508f..afeb4d4 100755
  }
  
  automount() {
-@@ -93,7 +106,13 @@ automount() {
+@@ -93,7 +112,19 @@ automount() {
  	# configured in fstab
  	grep -q "^$DEVNAME " /proc/mounts && return
  
 -	! test -d "/run/media/$name" && mkdir -p "/run/media/$name"
-+	is_userdata=`echo $DEVNAME | grep mmcblk | grep 4`
++	boot_from_mmcblk1=`cat /proc/cmdline | grep "root=/dev/mmcblk1"`
++	if [ "x$boot_from_mmcblk1" = "x" ];then
++		is_userdata=`echo $DEVNAME | grep mmcblk2p4`
++	else
++		is_userdata=`echo $DEVNAME | grep mmcblk1p4`
++	fi
++
 +	if [ "x$is_userdata" = "x" ];then
 +		! test -d "/run/media/$name" && mkdir -p "/run/media/$name"
 +	else
@@ -62,7 +74,7 @@ index ac4508f..afeb4d4 100755
  	# Silent util-linux's version of mounting auto
  	if [ "x`readlink $MOUNT`" = "x/bin/mount.util-linux" ] ;
  	then
-@@ -113,13 +132,21 @@ automount() {
+@@ -113,13 +144,21 @@ automount() {
  		;;
  	esac
  
