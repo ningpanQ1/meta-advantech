@@ -3,6 +3,7 @@ Description=a gesture interpreting program for touchscreens
 
 [Service]
 ExecStart=/usr/bin/gester
+Restart=always
 
 [Install]
 WantedBy=multi-user.target
