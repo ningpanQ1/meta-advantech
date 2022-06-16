@@ -9,7 +9,11 @@ MK_SDCARD_IMG = "mk-sdcard-image"
 
 inherit deploy
 
-SRC_URI = "file://mkimg-linux.sh"
+SRC_URI = " \
+	   file://mkimg-linux.sh \
+           file://mkinand-linux.sh \
+           file://mkspi-advboot.sh \
+"
 
 S = "${WORKDIR}"
 
@@ -17,8 +21,10 @@ do_deploy() {
 	install -d ${DEPLOYDIR}/${MK_SDCARD_IMG}
 	install -d ${DEPLOYDIR}/${MK_SDCARD_IMG}/images
 	install -d ${DEPLOYDIR}/${MK_SDCARD_IMG}/images/rootfs
-	install -m 0755 ${S}/mkimg-linux.sh        ${DEPLOYDIR}/${MK_SDCARD_IMG}
-
+        install -d ${DEPLOYDIR}/${MK_SDCARD_IMG}/scripts/
+	install -m 0755 ${S}/mkimg-linux.sh        ${DEPLOYDIR}/${MK_SDCARD_IMG}/scripts/mkimg-linux.sh
+        install -m 0755 ${S}/mkinand-linux.sh        ${DEPLOYDIR}/${MK_SDCARD_IMG}/scripts/mkinand-linux.sh
+        install -m 0755 ${S}/mkspi-advboot.sh ${DEPLOYDIR}/${MK_SDCARD_IMG}/scripts/mkspi-advboot.sh
 
 	if [ -e ${DEPLOY_DIR_IMAGE}/Image ] ; then
 		cp ${DEPLOY_DIR_IMAGE}/Image		${DEPLOYDIR}/${MK_SDCARD_IMG}/images/Image
@@ -29,8 +35,8 @@ do_deploy() {
 	fi
 
 
-	if [ -e ${DEPLOY_DIR_IMAGE}/imx-boot ] ; then
-		 cp ${DEPLOY_DIR_IMAGE}/imx-boot        ${DEPLOYDIR}/${MK_SDCARD_IMG}/images/flash.bin
+	if [ -e ${DEPLOY_DIR_IMAGE}/imx-boot-imx8mmeamb9918a1-sd.bin-flash_evk ] ; then
+		 cp ${DEPLOY_DIR_IMAGE}/imx-boot-imx8mmeamb9918a1-sd.bin-flash_evk        ${DEPLOYDIR}/${MK_SDCARD_IMG}/images/flash.bin
 
 	fi
 
@@ -38,30 +44,22 @@ do_deploy() {
 		cp ${DEPLOY_DIR_IMAGE}/swupdate-image-${MACHINE}.cpio.gz.u-boot ${DEPLOYDIR}/${MK_SDCARD_IMG}/images/initrd.img
         fi
 
-
-        if [ -e ${DEPLOY_DIR_IMAGE}/imx-image-full-${MACHINE}.tar.bz2 ] ; then
-		cp ${DEPLOY_DIR_IMAGE}/imx-image-full-${MACHINE}.tar.bz2 ${DEPLOYDIR}/${MK_SDCARD_IMG}/images/rootfs/
-
-        fi
-	
 }
 
 do_after_deploy() {
 
-	if [ -e ${DEPLOY_DIR_IMAGE}/${MK_SDCARD_IMG}/images/rootfs/imx-image-full-${MACHINE}.tar.bz2 ] ; then
-		tar jxvf ${DEPLOY_DIR_IMAGE}/${MK_SDCARD_IMG}/images/rootfs/imx-image-full-${MACHINE}.tar.bz2 -C ${DEPLOY_DIR_IMAGE}/${MK_SDCARD_IMG}/images/rootfs
-		rm -rf ${DEPLOY_DIR_IMAGE}/${MK_SDCARD_IMG}/images/rootfs/imx-image-full-${MACHINE}.tar.bz2
+        if [ -e ${DEPLOY_DIR_IMAGE}/imx-image-full-${MACHINE}.tar.bz2 ] ; then             
+             tar jxvf ${DEPLOY_DIR_IMAGE}/imx-image-full-${MACHINE}.tar.bz2 -C ${DEPLOY_DIR_IMAGE}/${MK_SDCARD_IMG}/images/rootfs
 	fi
-	cd ${DEPLOY_DIR_IMAGE}/${MK_SDCARD_IMG}/
-	bash -c ${DEPLOY_DIR_IMAGE}/${MK_SDCARD_IMG}/mkimg-linux.sh
-	rm -rf ${DEPLOY_DIR_IMAGE}/${MK_SDCARD_IMG}/images/
-	rm -rf ${DEPLOY_DIR_IMAGE}/${MK_SDCARD_IMG}/mkimg-linux.sh
+        if [ -d ${DEPLOY_DIR_IMAGE}/${MK_SDCARD_IMG}/out/  ] ; then
+         	rm -rf ${DEPLOY_DIR_IMAGE}/${MK_SDCARD_IMG}/out/
+        fi
 }
-
 do_clean() {
-	rm -rf ${DEPLOY_DIR_IMAGE}/${MK_SDCARD_IMG}/out/
+	if [ -d ${DEPLOY_DIR_IMAGE}/${MK_SDCARD_IMG}/out/ ] ; then
+		rm -rf ${DEPLOY_DIR_IMAGE}/${MK_SDCARD_IMG}/out/
+	fi
 }
-
 addtask deploy after do_compile
 addtask after_deploy after do_deploy before do_build
 # deploy task depends on image complete task

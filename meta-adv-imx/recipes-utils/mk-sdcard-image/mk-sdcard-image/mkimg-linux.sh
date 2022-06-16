@@ -1,7 +1,7 @@
 #!/bin/bash
  
 ROOT=$(pwd)
-ABS_IMAGESDIR=${ROOT}/images
+ABS_IMAGESDIR=${ROOT}/../images
  
 [[ "${IMAGE_VERSION}" == "" ]] && IMAGE_VERSION=1.0.0
  
@@ -119,7 +119,7 @@ function do_sdcard_image {
 	TMP_CMD="cp -a  $ABS_BL_IMAGE  $ABS_SD_DIR_SYSTEM/mk_inand/images/" && eval $TMP_CMD
 	TMP_CMD="cp -a  $ABS_INITRD_IMAGE  $ABS_SD_DIR_SYSTEM/mk_inand/images/" && eval $TMP_CMD
 	TMP_CMD="cp -a  $ABS_IMAGESDIR/rootfs  $ABS_SD_DIR_SYSTEM/mk_inand/images/" && eval $TMP_CMD
-	TMP_CMD="cp -a mkinand-linux.sh mkspi-advboot.sh  $ABS_SD_DIR_SYSTEM/mk_inand/scripts/" && eval $TMP_CMD
+	TMP_CMD="cp -a  ${ROOT}/mkinand-linux.sh ${ROOT}/mkspi-advboot.sh  $ABS_SD_DIR_SYSTEM/mk_inand/scripts/" && eval $TMP_CMD
 	
     echo "umount loopdevices"
     umount "$LOOPDEVICE"p3
