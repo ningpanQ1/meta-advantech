@@ -2,7 +2,7 @@ require swupdate.inc
 
 DEFAULT_PREFERENCE = "-1"
 
-SRCREV ?= "16019cbf5be9797e964515aa5eb4a7ab6c1fdf08"
+SRCREV ?= "623ccfc0848e4ebe86f2635123dae3bcf9c6032a"
 PV = "2021.04+git${SRCPV}"
 
 LIC_FILES_CHKSUM = "file://LICENSES/GPL-2.0-only.txt;md5=4ee23c52855c222cba72583d301d2338 \
