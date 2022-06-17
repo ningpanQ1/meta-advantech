@@ -1,0 +1,47 @@
+diff --git a/rsi/Makefile b/rsi/Makefile
+old mode 100644
+new mode 100755
+index 64f7742..1010761
+--- a/rsi/Makefile
++++ b/rsi/Makefile
+@@ -29,8 +29,8 @@
+ #*/
+ 
+ SUPP_DIR=$(PWD)/supplicant
+-KERNELRELEASE=$(shell uname -r)
+-KERNELDIR=/lib/modules/$(KERNELRELEASE)/build
++#KERNELRELEASE ?=$(shell uname -r)
++KERNELDIR ?=/lib/modules/$(KERNELRELEASE)/build
+ 
+ # uncomment below line for Caracalla board
+ #CONFIG_CARACALLA_BOARD=y
+@@ -45,7 +45,7 @@ KERNELDIR=/lib/modules/$(KERNELRELEASE)/build
+ #CONFIG_RSI_BT_ALONE=y
+ 
+ # Uncomment below line for Wi-Fi BT coex mode
+-#CONFIG_RSI_COEX_MODE=y
++CONFIG_RSI_COEX_MODE=y
+ 
+ # Uncomment below line for WLAN + Zigbee coex mode
+ #CONFIG_RSI_ZIGB=y
+@@ -197,14 +197,18 @@ rsi_91x-objs := $(RSI_91X_OBJS)
+ 
+ all:
+ 	@echo -e "\033[32mCompiling RSI drivers...\033[0m"
+-	make -C$(KERNELDIR)/ M=$(PWD) modules
++	make -C $(KERNELDIR)/ M=$(PWD) modules
+ 	@echo -e "application compilation"
+ 	make CC="$(CC)" ROOT_DIR=$(ROOT_DIR) -C $(PWD)/apps
++	install rsi_91x.ko -m 0755 $(PWD)/release
++	install rsi_usb.ko -m 0755 $(PWD)/release
++	install rsi_sdio.ko -m 0755 $(PWD)/release
+ 
+ clean:
+-	make -C$(KERNELDIR)/ M=$(PWD) clean
++	make -C $(KERNELDIR)/ M=$(PWD) clean
+ 	@find . -name 'receive' | xargs rm -rf
+ 	@find . -name 'bt_util' | xargs rm -rf
+ 	@find . -name 'onebox_util' | xargs rm -rf
+ 	@find . -name 'transmit' | xargs rm -rf
+ 	@find . -name 'transmit_packet' | xargs rm -rf
++	@rm -rf $(PWD)/release/*.ko
