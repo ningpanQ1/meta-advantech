@@ -8,10 +8,11 @@ ROOTFS_EXT4_IMAGE=$1
 FIXUP_SCRIPT=fixupdate.sh
 
 [ ! -e "sw-description" ] && echo "sw-description is missing" && exit 1
-FILES="sw-description"
+FILES=" "
 
 echo "sw-description is as below:"
 cat sw-description
+ls sw-description | cpio -ov -H crc > ${PRODUCT_NAME}_${CONTAINER_VER}.swu
 
 if [ -e "$DTB_IMAGE" ] && [ -e "$KERNEL_IMAGE" ];then
 	echo "generate the boot.img."
@@ -47,9 +48,7 @@ if [ -e "$FIXUP_SCRIPT" ];then
 fi
 
 echo "update file list: [$FILES]"
-
 for i in $FILES;
 do
-     echo $i;
-done | ./cpio -ov -H crc >  ${PRODUCT_NAME}_${CONTAINER_VER}.swu
+     echo $i;done |cpio -Aov -H crc -F  ${PRODUCT_NAME}_${CONTAINER_VER}.swu
 
