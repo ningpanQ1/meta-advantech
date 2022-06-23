@@ -108,7 +108,8 @@ function do_sdcard_image {
  
     echo "copy rootfs to system-partition"
     TMP_CMD="cp -a ""$ABS_IMAGESDIR""/rootfs/* ""$ABS_SD_DIR_SYSTEM" && eval $TMP_CMD
- 
+    TMP_CMD="chown -R root:root ""$ABS_SD_DIR_SYSTEM" && eval $TMP_CMD
+
 	echo "[Copying iNAND upgrate tools...]"
 	TMP_CMD="mkdir -p $ABS_SD_DIR_SYSTEM/mk_inand" && eval $TMP_CMD
     TMP_CMD="mkdir -p $ABS_SD_DIR_SYSTEM/mk_inand/images" && eval $TMP_CMD

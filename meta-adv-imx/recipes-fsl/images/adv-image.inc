@@ -30,5 +30,7 @@ IMAGE_INSTALL += " cronie inetutils inetutils-telnet inetutils-telnetd "
 IMAGE_INSTALL_append += " glibc-gconv-utf-16 "
 IMAGE_INSTALL_append += " qtbase qtbase-plugins qtvirtualkeyboard packagegroup-qt5-webengine "
 
+## support opcua server
+IMAGE_INSTALL_append += " python3-netifaces" 
 
 
