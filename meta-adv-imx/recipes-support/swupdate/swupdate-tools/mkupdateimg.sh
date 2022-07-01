@@ -48,8 +48,7 @@ if [ -e "$FIXUP_SCRIPT" ];then
 fi
 
 echo "update file list: [$FILES]"
-
 for i in $FILES;
 do
-     echo $i;done |cpio -Aov -H crc -F ${PRODUCT_NAME}_${CONTAINER_VER}.swu
+     echo $i;done |cpio -Aov -H crc -F  ${PRODUCT_NAME}_${CONTAINER_VER}.swu
 

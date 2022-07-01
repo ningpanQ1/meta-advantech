@@ -1,22 +1,21 @@
 SUMMARY="Image updater for Yocto projects"
 DESCRIPTION = "Application for automatic software update from USB Pen"
 SECTION="swupdate"
-DEPENDS += "libconfig libdrm libpng"
+DEPENDS += "libconfig zlib libdrm libpng"
 
 # SWUpdate licensing is described in the following pages:
 # https://sbabic.github.io/swupdate/licensing.html
 # rst form: file://doc/source/licensing.rst
 LICENSE = "GPLv2+ & LGPLv2+ & MIT"
-LICENSE_${PN}-lua = "LGPLv2+"
 LICENSE_${PN}-www = "MIT"
-LIC_FILES_CHKSUM = "file://COPYING;md5=0636e73ff0215e8d672dc4c32c317bb3 \
-                    file://Licenses/lgpl-2.1.txt;md5=4fbd65380cdd255951079008b364516c \
-                    file://Licenses/mit.txt;md5=838c366f69b72c5df05c96dff79b35f2 \
-                    file://Licenses/Exceptions;md5=5f205fe7a7f2b056b4fa42603fe2d63a"
+LIC_FILES_CHKSUM = "file://LICENSES/GPL-2.0-only.txt;md5=4ee23c52855c222cba72583d301d2338 \
+                    file://LICENSES/LGPL-2.1-or-later.txt;md5=4fbd65380cdd255951079008b364516c \
+                    file://LICENSES/MIT.txt;md5=838c366f69b72c5df05c96dff79b35f2 \
+                    file://LICENSES/BSD-3-Clause.txt;md5=4a1190eac56a9db675d58ebe86eaf50c"
 
 inherit cml1 update-rc.d pkgconfig
 
-SRC_URI = "git://github.com/jwzl/swupdate.git;protocol=https \
+SRC_URI = "git://github.com/Advantech-IIoT/swupdate.git;protocol=https \
     file://defconfig \
     file://swupdate \
     file://swupdate.sh \
@@ -96,10 +95,6 @@ B = "${WORKDIR}/build"
 EXTRA_OEMAKE += " O=${B} HOSTCC="${BUILD_CC}" HOSTCXX="${BUILD_CXX}" KCFLAGS="-I${STAGING_INCDIR}/libdrm"  LD="${CC}" DESTDIR="${D}" LIBDIR="${libdir}" V=1 ARCH=${TARGET_ARCH} CROSS_COMPILE=${TARGET_PREFIX} SKIP_STRIP=y"
 
 DEPENDS += "kern-tools-native"
-
-# returns all the elements from the src uri that are .cfg files
-def find_cfgs(d):
-    return [s for s in src_patches(d, True) if s.endswith('.cfg')]
 
 python () {
     import re
