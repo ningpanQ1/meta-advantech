@@ -17,7 +17,13 @@ ABS_SD_IMAGE=${ABS_OUT_DIR}"/""eamb9918-sdcard_${IMAGE_VERSION}.img"
 ABS_SD_DIR_BOOT="/tmp/"$RANDOM$RANDOM$RANDOM
 ABS_SD_DIR_RECOVERY="/tmp/"$RANDOM$RANDOM$RANDOM
 ABS_SD_DIR_SYSTEM="/tmp/"$RANDOM$RANDOM$RANDOM
- 
+
+userid=$(id -u)
+if [ $userid -ne "0" ]; then
+	echo "you're not root?"
+	exit -1;
+fi
+
 function do_sdcard_image {
     if [[ ! -d "$ABS_IMAGESDIR" ||
           ! -d "$ABS_ROOTFS" ||
@@ -36,6 +42,9 @@ function do_sdcard_image {
         echo "sdcard image (""$ABS_SD_IMAGE"") already existant, abort!!"
         exit -1
     fi
+
+    # avoid  owner:group of the files is not owner(root):group(root) 
+    chown -R root:root $ABS_IMAGESDIR
 
     echo "generate fullsize sdcard-Image"
     mkdir -p "$ABS_OUT_DIR"
