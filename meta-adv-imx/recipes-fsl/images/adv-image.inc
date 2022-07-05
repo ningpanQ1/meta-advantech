@@ -36,4 +36,7 @@ IMAGE_INSTALL_append += " python3-netifaces"
 ## uboot env tools 
 IMAGE_INSTALL_append += " u-boot-fw-utils" 
 
+## support readonly-rootfs-overlay
+IMAGE_INSTALL_append += " initscripts-readonly-rootfs-overlay"
+
 

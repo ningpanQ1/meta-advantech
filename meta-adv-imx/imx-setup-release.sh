@@ -224,6 +224,10 @@ if [ -d ../sources/meta-qt5-extra ]; then
     echo "BBLAYERS += \"\${BSPDIR}/sources/meta-qt5-extra\"" >> $BUILD_DIR/conf/bblayers.conf
 fi
 
+if [ -d ../sources/meta-readonly-rootfs-overlay ]; then
+    echo "BBLAYERS += \"\${BSPDIR}/sources/meta-readonly-rootfs-overlay\"" >> $BUILD_DIR/conf/bblayers.conf
+fi
+
 echo BSPDIR=$BSPDIR
 echo BUILD_DIR=$BUILD_DIR
 
