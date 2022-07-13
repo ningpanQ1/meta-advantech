@@ -25,6 +25,7 @@ CORE_IMAGE_EXTRA_INSTALL =  " \
 	e2fsprogs-e2fsck \
 	e2fsprogs-resize2fs \
 	libconfig \
+	libubootenv \
 	swupdate \
 	swupdate-engine \
 	swupdate-www \

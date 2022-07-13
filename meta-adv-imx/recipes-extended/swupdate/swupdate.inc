@@ -38,6 +38,7 @@ PACKAGES =+ " \
     ${PN}-progress \
     ${PN}-tools \
     ${PN}-tools-hawkbit \
+    ${PN}-tools-ipc \
     ${PN}-usb \
     ${PN}-www \
     ${PN}-engine \
@@ -47,6 +48,8 @@ wwwdir ?= "/www"
 
 # tools is now an empty meta package for backward compatibility
 ALLOW_EMPTY_${PN}-tools = "1"
+ALLOW_EMPTY_${PN}-tools-hawkbit = "1"
+ALLOW_EMPTY_${PN}-tools-ipc = "1"
 
 FILES_${PN}-client = "${bindir}/swupdate-client"
 FILES_${PN}-lua += "${libdir}/lua/"
@@ -63,6 +66,9 @@ FILES_${PN}-usb = " \
 FILES_${PN}-tools-hawkbit = " \
     ${bindir}/swupdate-hawkbitcfg \
     ${bindir}/swupdate-sendtohawkbit \
+"
+FILES_${PN}-tools-ipc = " \
+    ${bindir}/swupdate-ipc \
 "
 FILES_${PN} += " \
     ${libdir}/tmpfiles.d \
@@ -181,6 +187,9 @@ python () {
 
     if 'CONFIG_DISKPART=y\n' in features:
         depends += ' util-linux e2fsprogs'
+
+    if 'CONFIG_DELTA=y\n' in features:
+        depends += ' zchunk'
 
     d.setVar('DEPENDS', depends)
 
