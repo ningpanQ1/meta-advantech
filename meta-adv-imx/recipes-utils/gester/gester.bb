@@ -5,7 +5,6 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=3000208d539ec061b899bce1d9ce9404"
 
 SRC_URI = "git://github.com/Advantech-IIoT/gester.git;protocol=https;branch=master \
            file://gester.service \
-           file://0001_fix_make_err.patch \
 "
 SRC_URI[md5sum] = "176047737c1a23fb1b6ed2dd1d7b79b4"
 SRC_URI[sha256sum] = "53a46ed5ea20fdc40611a4f444370b4337b5f491068c33e842633e0f81596f81"
