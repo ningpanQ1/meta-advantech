@@ -31,6 +31,7 @@ do_compile() {
 }
 
 do_install() {
+	install -d ${D}/lib/firmware
 	install -d ${D}/usr/local/wifibt
 	install -m 755 ${WORKDIR}/startup_wlan_bt.sh ${D}/usr/local/wifibt/
 	install -m 755 ${WORKDIR}/onebox_insert.sh ${D}/usr/local/wifibt/
@@ -51,12 +52,13 @@ do_install() {
 	install -m 755 ${B}/release/onebox_util    ${D}/usr/local/wifibt/
 	install -m 755 ${B}/release/receive    ${D}/usr/local/wifibt/
 	install -m 755 ${B}/release/transmit*    ${D}/usr/local/wifibt/
+	install -m 755 ${S}/Firmware/pmemdata*   ${D}/lib/firmware/
 }
 
 SYSTEMD_SERVICE:${PN} = "wifibt.service"
 
 # List the files for Package
-FILES:${PN} += "${exec_prefix} ${systemd_system_unitdir}"
+FILES:${PN} += "${exec_prefix} ${systemd_system_unitdir} ${base_libdir}/firmware"
 
 ## Since no pass LDFLAGS for these program, so we
 ## we must skip the qa check
