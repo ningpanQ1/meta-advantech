@@ -2,7 +2,7 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 SRCBRANCH = "lf-5.10.y"
 LOCALVERSION = "-lts-5.10.y"
 KERNEL_SRC = "git://github.com/Advantech-IIoT/linux-imx.git;protocol=https"
-SRCREV = "66a33391604a0f9048104405c9b70b3e324933a1"
+SRCREV = "9195bdad2307fe5b5327773624e5115953e6ddc8"
 SRC_URI_append += "\
        file://logo_adv_custom_1024_600_clut224.ppm \
        file://logo_adv_custom_1280_800_clut224.ppm \
