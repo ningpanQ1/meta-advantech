@@ -1,0 +1,13 @@
+[Unit]
+Description=a gesture interpreting program for touchscreens 
+
+# Make sure we are started after weston service.
+Requires=weston.service
+After=weston.service
+
+[Service]
+ExecStart=/bin/bash -c 'source /etc/profile; /usr/bin/gester'
+Restart=always
+
+[Install]
+WantedBy=graphical.target
