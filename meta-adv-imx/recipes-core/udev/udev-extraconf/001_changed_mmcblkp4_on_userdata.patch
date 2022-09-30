@@ -1,0 +1,104 @@
+diff --git a/mount.sh b/mount.sh
+index b237318..f225c60 100755
+--- a/mount.sh
++++ b/mount.sh
+@@ -53,7 +53,18 @@ automount_systemd() {
+         grep "^[[:space:]]*$tmp" /etc/fstab && return
+     done
+ 
+-    [ -d "/run/media/$name" ] || mkdir -p "/run/media/$name"
++	boot_from_mmcblk1=`cat /proc/cmdline | grep "root=/dev/mmcblk1"`
++	if [ "x$boot_from_mmcblk1" = "x" ];then
++		is_userdata=`echo $DEVNAME | grep mmcblk2p4`
++	else
++		is_userdata=`echo $DEVNAME | grep mmcblk1p4`
++	fi
++
++	if [ "x$is_userdata" = "x" ];then
++		[ -d "/run/media/$name" ] || mkdir -p "/run/media/$name"
++	else
++		[ -d "/userdata" ] || mkdir -p "/userdata"
++	fi
+ 
+     MOUNT="$MOUNT -o silent"
+ 
+@@ -70,14 +81,22 @@ automount_systemd() {
+         ;;
+     esac
+ 
+-    if ! $MOUNT --no-block -t auto $DEVNAME "/run/media/$name"
+-    then
+-        #logger "mount.sh/automount" "$MOUNT -t auto $DEVNAME \"/run/media/$name\" failed!"
+-        rm_dir "/run/media/$name"
+-    else
+-        logger "mount.sh/automount" "Auto-mount of [/run/media/$name] successful"
+-        touch "/tmp/.automount-$name"
+-    fi
++	if [ "x$is_userdata" = "x$DEVNAME" ];then
++		if $MOUNT --no-block -t auto $DEVNAME "/userdata"
++		then
++			logger "mount.sh/automount" "Auto-mount of [/userdata] successful"
++			touch "/tmp/.automount-$name"
++		fi
++	else
++		if ! $MOUNT --no-block -t auto $DEVNAME "/run/media/$name"
++		then
++			#logger "mount.sh/automount" "$MOUNT -t auto $DEVNAME \"/run/media/$name\" failed!"
++			rm_dir "/run/media/$name"
++		else
++			logger "mount.sh/automount" "Auto-mount of [/run/media/$name] successful"
++			touch "/tmp/.automount-$name"
++		fi
++	fi
+ }
+ 
+ automount() {
+@@ -93,7 +112,19 @@ automount() {
+ 	# configured in fstab
+ 	grep -q "^$DEVNAME " /proc/mounts && return
+ 
+-	! test -d "/run/media/$name" && mkdir -p "/run/media/$name"
++	boot_from_mmcblk1=`cat /proc/cmdline | grep "root=/dev/mmcblk1"`
++	if [ "x$boot_from_mmcblk1" = "x" ];then
++		is_userdata=`echo $DEVNAME | grep mmcblk2p4`
++	else
++		is_userdata=`echo $DEVNAME | grep mmcblk1p4`
++	fi
++
++	if [ "x$is_userdata" = "x" ];then
++		! test -d "/run/media/$name" && mkdir -p "/run/media/$name"
++	else
++		! test -d "/run/media/$name" || mkdir -p "/userdata"
++	fi
++
+ 	# Silent util-linux's version of mounting auto
+ 	if [ "x`readlink $MOUNT`" = "x/bin/mount.util-linux" ] ;
+ 	then
+@@ -113,13 +144,21 @@ automount() {
+ 		;;
+ 	esac
+ 
+-	if ! $MOUNT -t auto $DEVNAME "/run/media/$name"
+-	then
+-		#logger "mount.sh/automount" "$MOUNT -t auto $DEVNAME \"/run/media/$name\" failed!"
+-		rm_dir "/run/media/$name"
++	if [ "x$is_userdata" = "x$DEVNAME" ];then
++		if $MOUNT -t auto $DEVNAME "/userdata"
++		then
++			logger "mount.sh/automount" "Auto-mount of [/userdata] successful"
++			touch "/tmp/.automount-$name"
++		fi
+ 	else
+-		logger "mount.sh/automount" "Auto-mount of [/run/media/$name] successful"
+-		touch "/tmp/.automount-$name"
++		if ! $MOUNT -t auto $DEVNAME "/run/media/$name"
++		then
++			#logger "mount.sh/automount" "$MOUNT -t auto $DEVNAME \"/run/media/$name\" failed!"
++			rm_dir "/run/media/$name"
++		else
++			logger "mount.sh/automount" "Auto-mount of [/run/media/$name] successful"
++			touch "/tmp/.automount-$name"
++		fi
+ 	fi
+ }
+ 	
