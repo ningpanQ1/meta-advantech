@@ -19,6 +19,8 @@ INSANE_SKIP_${PN} = "ldflags"
 INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
 INHIBIT_PACKAGE_STRIP = "1"
 
+TARGET_CC_ARCH += "${LDFLAGS}"
+
 do_compile() {
         oe_runmake LD="${CXX}" CC="${CC}" CXX="${CXX}" AR="${AR}"
 }
