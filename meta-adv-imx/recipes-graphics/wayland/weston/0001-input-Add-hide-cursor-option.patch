@@ -1,0 +1,55 @@
+From 6b588aa64088ab658022af85f8f77bcdb002dfb1 Mon Sep 17 00:00:00 2001
+From: gitlab <gitlab@advantech.com.tw>
+Date: Fri, 29 Jul 2022 10:24:02 +0800
+Subject: [PATCH] input: Add hide-cursor option
+
+---
+ compositor/main.c             | 4 ++++
+ include/libweston/libweston.h | 3 +++
+ libweston/input.c             | 4 ++++
+ 3 files changed, 11 insertions(+)
+
+diff --git a/compositor/main.c b/compositor/main.c
+index cbf06690..4c26ae4c 100644
+--- a/compositor/main.c
++++ b/compositor/main.c
+@@ -1120,6 +1120,10 @@ weston_compositor_init_config(struct weston_compositor *ec,
+ 		weston_compositor_enable_touch_calibrator(ec,
+ 						save_touch_device_calibration);
+ 
++	weston_config_section_get_bool(s, "hide-cursor", &ec->hide_cursor, false);
++	if (ec->hide_cursor)
++		weston_log("input: Hiding cursor pointer\n");
++
+ 	return 0;
+ }
+ 
+diff --git a/include/libweston/libweston.h b/include/libweston/libweston.h
+index 089f2d9a..3a062c99 100644
+--- a/include/libweston/libweston.h
++++ b/include/libweston/libweston.h
+@@ -1123,6 +1123,9 @@ struct weston_compositor {
+ 	struct weston_log_scope *timeline;
+ 
+ 	struct content_protection *content_protection;
++
++	/* Do not show client cursors. */
++	bool hide_cursor;
+ };
+ 
+ struct weston_buffer {
+diff --git a/libweston/input.c b/libweston/input.c
+index b4e2c66f..264b2293 100644
+--- a/libweston/input.c
++++ b/libweston/input.c
+@@ -2728,6 +2728,10 @@ pointer_set_cursor(struct wl_client *client, struct wl_resource *resource,
+ 		return;
+ 
+ 	if (!pointer->sprite || pointer->sprite->surface != surface) {
++		// hide cursor
++		if (pointer->seat->compositor->hide_cursor)
++			return;
++
+ 		if (weston_surface_set_role(surface, "wl_pointer-cursor",
+ 					    resource,
+ 					    WL_POINTER_ERROR_ROLE) < 0)
