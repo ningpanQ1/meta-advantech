@@ -30,3 +30,6 @@ IMAGE_INSTALL:append = " qtbase qtbase-plugins qtvirtualkeyboard packagegroup-qt
 
 ## support opcua server
 IMAGE_INSTALL:append = " python3-netifaces"
+
+## uboot env tools 
+IMAGE_INSTALL:append = " u-boot-fw-utils" 
