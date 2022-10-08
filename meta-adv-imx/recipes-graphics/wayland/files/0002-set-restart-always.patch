@@ -1,0 +1,11 @@
+diff a/weston.service b/weston.service
+--- a/weston.service
++++ b/weston.service
+@@ -35,6 +35,7 @@ ConditionPathExists=/dev/tty0
+ Type=notify
+ EnvironmentFile=/etc/default/weston
+ ExecStart=/usr/bin/weston --modules=systemd-notify.so $OPTARGS
++Restart=always
+ 
+ # Optional watchdog setup
+ TimeoutStartSec=60
