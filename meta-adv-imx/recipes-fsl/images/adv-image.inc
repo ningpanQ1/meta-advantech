@@ -27,3 +27,6 @@ IMAGE_INSTALL:append = " giflib exfat-utils "
 IMAGE_INSTALL:append = " cronie inetutils inetutils-telnet inetutils-telnetd "
 IMAGE_INSTALL:append = " glibc-gconv-utf-16 "
 IMAGE_INSTALL:append = " qtbase qtbase-plugins qtvirtualkeyboard packagegroup-qt6-webengine "
+
+## support opcua server
+IMAGE_INSTALL:append = " python3-netifaces"
