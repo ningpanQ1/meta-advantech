@@ -132,6 +132,12 @@ imx8*)
     ;;
 esac
 
+# get bsp current git log timestamp
+cd $CWD/.repo/manifests
+SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct)
+REPRODUCIBLE_TIMESTAMP_ROOTFS=$(git log -1 --pretty=%ct)
+cd -
+
 # Cleanup previous meta-freescale/EULA overrides
 cd $CWD/sources/meta-freescale
 if [ -h EULA ]; then
@@ -175,6 +181,11 @@ echo >> conf/local.conf
 echo "# Switch to Debian packaging and include package-management in the image" >> conf/local.conf
 echo "PACKAGE_CLASSES = \"package_deb\"" >> conf/local.conf
 echo "EXTRA_IMAGE_FEATURES += \"package-management\"" >> conf/local.conf
+
+echo >> conf/local.conf
+echo "# Setup default environment for reproducible builds " >> conf/local.conf
+echo "SOURCE_DATE_EPOCH = \"${SOURCE_DATE_EPOCH}\"" >> conf/local.conf
+echo "REPRODUCIBLE_TIMESTAMP_ROOTFS = \"${REPRODUCIBLE_TIMESTAMP_ROOTFS}\"" >> conf/local.conf
 
 if [ ! -e $BUILD_DIR/conf/bblayers.conf.org ]; then
     cp $BUILD_DIR/conf/bblayers.conf $BUILD_DIR/conf/bblayers.conf.org
