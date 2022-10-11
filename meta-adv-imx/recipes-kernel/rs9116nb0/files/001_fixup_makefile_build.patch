@@ -24,6 +24,15 @@ index 64f7742..1010761
  
  # Uncomment below line for WLAN + Zigbee coex mode
  #CONFIG_RSI_ZIGB=y
+@@ -89,7 +89,7 @@ also need to enabled CONFIG_RS9116_FLASH_MODE flag
+ mac80211 will do scan
+ OFFLOAD_SCAN_TO_DEVICE=y
+
+-EXTRA_CFLAGS += -DLINUX -Wimplicit -Wstrict-prototypes -Wall -Werror
++EXTRA_CFLAGS += -DLINUX -Wimplicit -Wstrict-prototypes -Wall
+ EXTRA_CFLAGS += -I$(PWD)/include
+ EXTRA_CFLAGS += -DCONFIG_RSI_DEBUGFS
+
 @@ -197,14 +197,18 @@ rsi_91x-objs := $(RSI_91X_OBJS)
  
  all:

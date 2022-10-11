@@ -7,7 +7,7 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda
 inherit module
 inherit pkgconfig systemd
 
-SRC_URI = "git://github.com/SiliconLabs/RS911X-nLink-OSD.git;protocol=https \
+SRC_URI = "git://github.com/SiliconLabs/RS911X-nLink-OSD.git;protocol=https;branch=master \
 		file://startup_wlan_bt.sh \
 		file://onebox_insert.sh \
 		file://wifibt.service \
