@@ -6,7 +6,7 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     chromium-ozone-wayland \
 "
 
-ROOTFS_POSTPROCESS_COMMAND:append:mx8 = "install_browser; \
+ROOTFS_POSTPROCESS_COMMAND:append:mx8-nxp-bsp = "install_browser; \
                                          install_virtual_keyboard; "
 
 install_browser() {
