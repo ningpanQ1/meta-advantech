@@ -45,7 +45,9 @@ $: source setup-environment <build path>
 
 ## 3.Build images
 ---------------------
-Each graphical backend X11, Frame buffer and Wayland must be in a separate build directory, so the setup script above must be run for each backend to configure the build correctly. In this release two image recipes are provided that work on almost all backends.						
+Each graphical backend X11, Frame buffer and Wayland must be in a separate build
+directory, so the setup script above must be run for each backend to configure the build
+correctly. In this release two image recipes are provided that work on almost all backends.
 
 DISTROs are new and the way to configure for any backends.  Use DISTRO= instead of the -e on the setup script.					
 The -e parameter gets converted to the appropriate distro configuration.					
@@ -55,8 +57,8 @@ The -e parameter gets converted to the appropriate distro configuration.
 ***The X11 and Framebuffer distros are only supported for i.MX 6 and i.MX 7.  i.MX 8 should use xwayland only.***						
 ***XWayland is the default distro for all i.MX families.***						
 
--   imx-image-multimedia: This image contains all the packages except QT5/OpenCV/Machine Learning packages.					
--   imx-image-full: This is the big image which includes imx-image-multimedia + OpenCV + QT5 + Machine Learning packages.					
+-   imx-image-multimedia: This image contains all the packages except QT6/OpenCV/Machine Learning packages.
+-   imx-image-full: This is the big image which includes imx-image-multimedia + OpenCV + QT6 + Machine Learning packages.
 -   swupdate-image: Advantech OTA recovery initrd image for recovery image  					
 
 Here are some examples:																
@@ -69,9 +71,9 @@ Here are some examples:
   bitbake <image>
 ```
 						
-To run the QT5 examples use the following parameters:				
+To run the QT6 examples use the followingparameters:
 ```	
-<QT5 Example> -platform eglfs -plugin evdevtouch:/dev/input/event0						
+<QT6 Example> -platform eglfs -plugin evdevtouch:/dev/input/event0
 ```
 					
 ### 3.2 Building XWayland
@@ -81,9 +83,9 @@ To run the QT5 examples use the following parameters:
   bitbake <image>
 ```
 							
-To run the QT5 examples use the following parameters:				
+To run the QT6 examples use the following parameters:
 ```
-<QT5 example> platform wayland-egl -plugin evdevtouch:/dev/input/event0 --fullscreen
+<QT6 example> platform wayland-egl -plugin evdevtouch:/dev/input/event0 --fullscreen
 ```
 						
 ### 3.3 Building Wayland-Weston (wayland)
@@ -93,9 +95,9 @@ To run the QT5 examples use the following parameters:
   bitbake <image>
 ```
 						
-To run the QT5 examples use the following parameters:						
+To run the QT6 examples use the following parameters:
 ```
-<QT5 example> platform wayland-egl -plugin evdevtouch:/dev/input/event0 --fullscreen
+<QT6 example> platform wayland-egl -plugin evdevtouch:/dev/input/event0 --fullscreen
 ```
 						
 ### 3.4 Building with Multilib support
@@ -109,12 +111,12 @@ In local.conf
 ```										
 require conf/multilib.conf									
 MULTILIBS = "multilib:lib32"												
-DEFAULTTUNE_virtclass-multilib-lib32 = "armv7athf-neon"												
+DEFAULTTUNE:virtclass-multilib-lib32 = "armv7athf-neon"
 ```
 												
 - 32-bit libraries to be added into the image
 ```						
-IMAGE_INSTALL_append = " lib32-glibc lib32-libgcc lib32-libstdc++"											
+IMAGE_INSTALL:append = " lib32-glibc lib32-libgcc lib32-libstdc++"
 ```
 						
 ### 3.5 Hardware Floating Point
@@ -122,7 +124,7 @@ IMAGE_INSTALL_append = " lib32-glibc lib32-libgcc lib32-libstdc++"
 This release enables hardware floating point by default.  This feature is enabled in both the machine 
 configurations and in the layer.conf. (Some machine files exist in the community meta-fsl-arm without this setting.)						
 ```
-DEFAULTTUNE_mx6 = "cortexa9hf-neon
+DEFAULTTUNE:mx6-nxp-bsp = "cortexa9hf-neon
 ```
 						
 Software floating point is not supported starting with the 4.1.15_1.0.0_ga release						
@@ -150,7 +152,7 @@ setup process because, once accepted, all further work in the Yocto environment 
 ---------
 Add Chromium to your Wayland or X11-based image by adding the following lines to local.conf:						
 ```
-IMAGE_INSTALL_append = \						
+IMAGE_INSTALL:append = \
     "${@bb.utils.contains('DISTRO_FEATURES', 'wayland', ' chromium-ozone-wayland', \						
         bb.utils.contains('DISTRO_FEATURES',     'x11', ' chromium-x11', \						
                                                         '', d), d)}"						
@@ -168,7 +170,7 @@ Chromium will have compilation errors, if any of the above host requirements are
 Qtwebengine is not built by default so add this to local.conf or image recipe. It is supported only on the machines
 that has GPU.
 ```						
- IMAGE_INSTALL_append = "packagegroup-qt5-webengine"						
+ IMAGE_INSTALL:append = "packagegroup-qt6-webengine"
 ```
 												
 There are many browsers available using QtWebEngine and can be found here:						
@@ -191,11 +193,11 @@ This configuration is supported only on mx8 machines.
 By default, wayland plugin is enabled.We can switch to kms plugin by following these steps.						
 - killall weston						
 - export QT_QPA_EGLFS_ALWAYS_SET_MODE=1						
-- Run any qt application using -platform eglfs		
+- Run any qt application using -platform eglfs
 										
   Example:
 ```
- ./Qt5_CinematicExperience -platform eglfs						
+ ./Qt6_CinematicExperience -platform eglfs
 ```
 													
 ## 8. Systemd
