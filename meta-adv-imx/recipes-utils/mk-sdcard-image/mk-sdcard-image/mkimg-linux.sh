@@ -48,8 +48,8 @@ function do_sdcard_image {
 
     echo "generate fullsize sdcard-Image"
     mkdir -p "$ABS_OUT_DIR"
-    # 10 GB
-    dd if=/dev/zero of="$ABS_SD_IMAGE" bs=65536 count=163840     
+    # 12 GB
+    dd if=/dev/zero of="$ABS_SD_IMAGE" bs=65536 count=196608
  
     echo "partitioning sdcard-Image"
     LOOPDEVICE=$(losetup -f)
@@ -62,7 +62,7 @@ function do_sdcard_image {
     A=$B_START_SIZE
 	B=600	#in MiB
 	C=1024	#in MiB
-	D=9216	#in MiB
+	D=10240	#in MiB
      
     echo A: $A
     echo B: $B
